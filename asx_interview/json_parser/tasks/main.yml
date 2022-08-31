@@ -1,0 +1,34 @@
+---
+- name: Upload json file to container 
+  template:
+    src: users.json.j2
+    dest: /tmp/users.json
+          
+- name: Read JSON content play
+  command: cat /tmp/users.json
+  register: jsoncontent
+
+- name: Process json user data 
+  debug: msg="{{ jsoncontent.json | json_query(jmesquery) }}"
+  vars:
+    jmesquery: "[*].{Name: name, Email: email, Phone: phone, CompanyName: company.name, WebSite: website, City: address.city}"
+    
+- name: Just the Names
+  debug: msg="{{ jsoncontent.json | json_query(jmesquery)}}"
+  vars:
+    jmesquery: "[*].name"    
+
+# Connect to service over HTTPS
+# HTTP post json fragment
+- name: Create a JIRA users
+  ansible.builtin.uri:
+    url: "{{ jira_api_user_endpoint }}"
+    user: "{{ username }}"
+    password: "{{ password }}"
+    method: POST
+    body: "{{ lookup('ansible.builtin.file','users.json') }}"
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+
+# Print json map of objects with validation

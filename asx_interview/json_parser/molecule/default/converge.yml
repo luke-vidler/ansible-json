@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include obaka.json_parser"
+      include_role:
+        name: "obaka.json_parser"

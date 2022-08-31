@@ -1,0 +1,5 @@
+---
+# defaults file for json_parser
+jira_api_user_endpoint: https://jira.example.com/rest/api/2/user
+username: lvidler
+password: securepass
