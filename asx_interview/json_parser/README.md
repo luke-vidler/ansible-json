@@ -8,3 +8,7 @@ Requirements
 * molecule 
 * molecule[docker]
 * pip: jmespath
+
+Usage
+------------
+molecule test
